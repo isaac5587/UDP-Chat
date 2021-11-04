@@ -5,6 +5,9 @@ var udp = require('dgram');
 // creating a udp server
 var server = udp.createSocket('udp4');
 
+// Array of clients 
+clientArray = [];
+
 // emits when any error occurs
 server.on('error',function(error){
   console.log('Error: ' + error);
@@ -12,19 +15,28 @@ server.on('error',function(error){
 });
 
 // emits on new datagram msg
+//Server receives message
 server.on('message',function(msg,info){
     console.log('Data received from client : ' + msg.toString());
     console.log('Received %d bytes from %s:%d',msg.length, info.address, info.port);
+  if(!clientArray.includes(info.port)){
+    clientArray.push(info.port);
+  }
+
+   
 
     //sending msg
-    server.send(msg,info.port,'localhost',function(error){
-    if(error){
-        client.close();
-    }else{
-        console.log('Reply sent\n');
-    }
 
-    });
+
+    for(const elements of clientArray){
+      server.send(msg,elements,'localhost',function(error){
+        if(error){
+            client.close();
+        }else{
+            console.log('Reply sent\n');
+        }
+    
+        })};
 
 });
 
@@ -46,6 +58,4 @@ server.on('close',function(){
 
 server.bind(2222);
 
-setTimeout(function(){
-server.close();
-},60000);
+

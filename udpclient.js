@@ -1,4 +1,6 @@
 var udp = require('dgram');
+
+// Allows input on the client side to send to the server 
 const readline = require("readline");
     const rl = readline.createInterface({
     input: process.stdin,
@@ -10,11 +12,14 @@ var buffer = require('buffer');
 // creating a client socket
 var client = udp.createSocket('udp4');
 
+// Message that displays information about the data 
 client.on('message',function(msg,info){
   console.log('Data received from server : ' + msg.toString());
   console.log('Received %d bytes from %s:%d\n',msg.length, info.address, info.port);
 });
 
+
+// We use a promise here since JS is not Asynchronus
 const question1 = () => {
   return new Promise((resolve, reject) => {
 
@@ -34,6 +39,9 @@ const question1 = () => {
  });
 };
 
+
+
+// Solution here to handle asynchronous operations
 const main = async () => {
   while(1==1)
 

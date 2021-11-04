@@ -27,7 +27,7 @@ server.on('message',function(msg,info){
 
     //sending msg
 
-
+ // for loop so that it sends to each client in the array
     for(const elements of clientArray){
       server.send(msg,elements,'localhost',function(error){
         if(error){
